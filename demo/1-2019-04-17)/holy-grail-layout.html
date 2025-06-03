@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣杯布局</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            padding: 0 200px 0 150px; /* 为左右栏留出空间 */
+            min-height: 500px;
+        }
+        
+        .main, .left, .right {
+            float: left;
+            min-height: 500px;
+            position: relative;
+        }
+        
+        .main {
+            width: 100%;
+            background-color: #f0f0f0;
+        }
+        
+        .left {
+            width: 150px;
+            background-color: #ff6b6b;
+            margin-left: -100%; /* 移动到最左边 */
+            left: -150px; /* 通过相对定位移动到左侧空白区域 */
+        }
+        
+        .right {
+            width: 200px;
+            background-color: #4ecdc4;
+            margin-left: -200px; /* 移动到右边 */
+            right: -200px; /* 通过相对定位移动到右侧空白区域 */
+        }
+        
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        
+        /* 内容样式 */
+        .main-content, .left-content, .right-content {
+            padding: 20px;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .main-content {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container clearfix">
+        <div class="main">
+            <div class="main-content">
+                <h2>主要内容区域</h2>
+                <p>这是中间的主要内容区域，宽度自适应。当浏览器窗口改变时，这个区域会自动调整宽度。</p>
+                <p>圣杯布局通过父容器的padding为左右栏预留空间，然后通过负margin和相对定位将左右栏移动到正确位置。</p>
+            </div>
+        </div>
+        <div class="left">
+            <div class="left-content">
+                <h3>左侧栏</h3>
+                <p>固定宽度150px</p>
+            </div>
+        </div>
+        <div class="right">
+            <div class="right-content">
+                <h3>右侧栏</h3>
+                <p>固定宽度200px</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

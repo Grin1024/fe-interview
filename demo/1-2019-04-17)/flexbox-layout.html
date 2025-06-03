@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexbox三栏布局</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 500px;
+        }
+        
+        .left {
+            width: 150px;
+            background-color: #ff6b6b;
+            order: 1;
+        }
+        
+        .main {
+            flex: 1;
+            background-color: #f0f0f0;
+            order: 2;
+        }
+        
+        .right {
+            width: 200px;
+            background-color: #4ecdc4;
+            order: 3;
+        }
+        
+        .main-content, .left-content, .right-content {
+            padding: 20px;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .main-content {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main">
+            <div class="main-content">
+                <h2>主要内容区域（Flexbox）</h2>
+                <p>使用Flexbox实现的三栏布局，代码更简洁，兼容性更好。</p>
+                <p>flex: 1 让中间栏自动占据剩余空间。</p>
+            </div>
+        </div>
+        <div class="left">
+            <div class="left-content">
+                <h3>左侧栏</h3>
+                <p>固定宽度150px</p>
+            </div>
+        </div>
+        <div class="right">
+            <div class="right-content">
+                <h3>右侧栏</h3>
+                <p>固定宽度200px</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
