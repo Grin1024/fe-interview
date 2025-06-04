@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>去除字符串中最后一个指定字符</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .method {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .method h3 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+        .code {
+            font-family: monospace;
+            background: #f1f1f1;
+            padding: 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>去除字符串中最后一个指定字符</h1>
+        
+        <div class="input-group">
+            <label for="inputString">输入字符串：</label>
+            <input type="text" id="inputString" value="hello world hello" placeholder="请输入要处理的字符串">
+        </div>
+        
+        <div class="input-group">
+            <label for="targetChar">要删除的字符：</label>
+            <input type="text" id="targetChar" value="l" placeholder="请输入要删除的字符" maxlength="1">
+        </div>
+        
+        <button onclick="runTest()">开始测试</button>
+        <button onclick="clearResults()">清空结果</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // 方法1: 使用 lastIndexOf + substring
+        function removeLastChar1(str, char) {
+            const lastIndex = str.lastIndexOf(char);
+            if (lastIndex === -1) return str;
+            return str.substring(0, lastIndex) + str.substring(lastIndex + 1);
+        }
+
+        // 方法2: 使用 lastIndexOf + slice
+        function removeLastChar2(str, char) {
+            const lastIndex = str.lastIndexOf(char);
+            if (lastIndex === -1) return str;
+            return str.slice(0, lastIndex) + str.slice(lastIndex + 1);
+        }
+
+        // 方法3: 使用正则表达式
+        function removeLastChar3(str, char) {
+            const escapedChar = char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`${escapedChar}(?!.*${escapedChar})`);
+            return str.replace(regex, '');
+        }
+
+        // 方法4: 使用循环从后往前查找
+        function removeLastChar4(str, char) {
+            for (let i = str.length - 1; i >= 0; i--) {
+                if (str[i] === char) {
+                    return str.slice(0, i) + str.slice(i + 1);
+                }
+            }
+            return str;
+        }
+
+        function runTest() {
+            const inputString = document.getElementById('inputString').value;
+            const targetChar = document.getElementById('targetChar').value;
+            const resultsDiv = document.getElementById('results');
+            
+            if (!inputString || !targetChar) {
+                alert('请输入字符串和要删除的字符');
+                return;
+            }
+            
+            const methods = [
+                {
+                    name: 'lastIndexOf + substring',
+                    func: removeLastChar1,
+                    description: '使用 lastIndexOf() 找到最后一个字符位置，然后用 substring() 拼接'
+                },
+                {
+                    name: 'lastIndexOf + slice',
+                    func: removeLastChar2,
+                    description: '使用 lastIndexOf() 找到最后一个字符位置，然后用 slice() 拼接'
+                },
+                {
+                    name: '正则表达式',
+                    func: removeLastChar3,
+                    description: '使用正向先行断言的正则表达式匹配最后一个指定字符'
+                },
+                {
+                    name: '循环查找',
+                    func: removeLastChar4,
+                    description: '从字符串末尾开始循环查找，找到第一个匹配字符后删除'
+                }
+            ];
+            
+            let html = '<div class="result">';
+            html += `<h2>测试结果</h2>`;
+            html += `<p><strong>原字符串:</strong> "${inputString}"</p>`;
+            html += `<p><strong>要删除的字符:</strong> "${targetChar}"</p>`;
+            
+            methods.forEach(method => {
+                const result = method.func(inputString, targetChar);
+                const isChanged = result !== inputString;
+                
+                html += `
+                    <div class="method">
+                        <h3>${method.name}</h3>
+                        <p>${method.description}</p>
+                        <p><strong>结果:</strong> <span class="code">"${result}"</span></p>
+                        <p><strong>状态:</strong> ${isChanged ? '✓ 成功删除' : '⚠ 字符未找到'}</p>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            resultsDiv.innerHTML = html;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // 页面加载时运行一次测试
+        window.onload = function() {
+            runTest();
+        };
+    </script>
+</body>
+</html> 

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>去除字符串中最后一个指定字符 - 测试页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .input-section {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .results-section {
+            padding: 30px;
+        }
+
+        .method-result {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .method-result:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .method-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .method-body {
+            padding: 20px;
+        }
+
+        .method-description {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .result-display {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .result-success {
+            border-left: 4px solid #28a745;
+            background: #d4edda;
+        }
+
+        .result-error {
+            border-left: 4px solid #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .result-unchanged {
+            border-left: 4px solid #ffc107;
+            background: #fff3cd;
+        }
+
+        .performance-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .performance-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #495057;
+            text-align: center;
+        }
+
+        .performance-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .performance-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .performance-method {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .performance-time {
+            font-size: 1.5em;
+            color: #4facfe;
+            font-weight: bold;
+        }
+
+        .examples-section {
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .examples-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #495057;
+            text-align: center;
+        }
+
+        .example-item {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .example-input {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+
+        .example-output {
+            font-family: 'Courier New', monospace;
+            background: #d4edda;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .form-group {
+                min-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>去除字符串中最后一个指定字符</h1>
+            <p>多种实现方法的对比测试</p>
+        </div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <div class="form-group">
+                    <label for="inputString">输入字符串：</label>
+                    <input type="text" id="inputString" class="form-control" 
+                           value="hello world hello" placeholder="请输入要处理的字符串">
+                </div>
+                <div class="form-group">
+                    <label for="targetChar">要删除的字符：</label>
+                    <input type="text" id="targetChar" class="form-control" 
+                           value="l" placeholder="请输入要删除的字符" maxlength="1">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" onclick="runAllTests()">开始测试</button>
+                    <button class="btn btn-secondary" onclick="clearResults()">清空结果</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <div id="results"></div>
+        </div>
+
+        <div class="performance-section">
+            <h2 class="performance-title">性能测试结果</h2>
+            <div id="performanceResults" class="performance-results"></div>
+        </div>
+
+        <div class="examples-section">
+            <h2 class="examples-title">使用示例</h2>
+            <div class="example-item">
+                <h3>示例 1: 删除最后一个字母</h3>
+                <div class="example-input">输入: "hello world", 删除: "l"</div>
+                <div class="example-output">输出: "hello word"</div>
+            </div>
+            <div class="example-item">
+                <h3>示例 2: 删除重复字符中的最后一个</h3>
+                <div class="example-input">输入: "programming", 删除: "m"</div>
+                <div class="example-output">输出: "programing"</div>
+            </div>
+            <div class="example-item">
+                <h3>示例 3: 字符不存在的情况</h3>
+                <div class="example-input">输入: "javascript", 删除: "z"</div>
+                <div class="example-output">输出: "javascript" (保持不变)</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 方法1: 使用 lastIndexOf + substring
+        function removeLastChar1(str, char) {
+            if (typeof str !== 'string' || typeof char !== 'string') {
+                throw new Error('参数必须是字符串类型');
+            }
+            
+            if (char.length !== 1) {
+                throw new Error('要删除的字符必须是单个字符');
+            }
+            
+            const lastIndex = str.lastIndexOf(char);
+            if (lastIndex === -1) {
+                return str;
+            }
+            
+            return str.substring(0, lastIndex) + str.substring(lastIndex + 1);
+        }
+
+        // 方法2: 使用 lastIndexOf + slice
+        function removeLastChar2(str, char) {
+            if (typeof str !== 'string' || typeof char !== 'string') {
+                throw new Error('参数必须是字符串类型');
+            }
+            
+            if (char.length !== 1) {
+                throw new Error('要删除的字符必须是单个字符');
+            }
+            
+            const lastIndex = str.lastIndexOf(char);
+            if (lastIndex === -1) {
+                return str;
+            }
+            
+            return str.slice(0, lastIndex) + str.slice(lastIndex + 1);
+        }
+
+        // 方法3: 使用正则表达式
+        function removeLastChar3(str, char) {
+            if (typeof str !== 'string' || typeof char !== 'string') {
+                throw new Error('参数必须是字符串类型');
+            }
+            
+            if (char.length !== 1) {
+                throw new Error('要删除的字符必须是单个字符');
+            }
+            
+            const escapedChar = char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`${escapedChar}(?!.*${escapedChar})`);
+            
+            return str.replace(regex, '');
+        }
+
+        // 方法4: 使用数组反转
+        function removeLastChar4(str, char) {
+            if (typeof str !== 'string' || typeof char !== 'string') {
+                throw new Error('参数必须是字符串类型');
+            }
+            
+            if (char.length !== 1) {
+                throw new Error('要删除的字符必须是单个字符');
+            }
+            
+            const arr = str.split('');
+            const reversedArr = arr.reverse();
+            
+            const index = reversedArr.indexOf(char);
+            if (index === -1) {
+                return str;
+            }
+            
+            reversedArr.splice(index, 1);
+            return reversedArr.reverse().join('');
+        }
+
+        // 方法5: 使用循环从后往前查找
+        function removeLastChar5(str, char) {
+            if (typeof str !== 'string' || typeof char !== 'string') {
+                throw new Error('参数必须是字符串类型');
+            }
+            
+            if (char.length !== 1) {
+                throw new Error('要删除的字符必须是单个字符');
+            }
+            
+            for (let i = str.length - 1; i >= 0; i--) {
+                if (str[i] === char) {
+                    return str.slice(0, i) + str.slice(i + 1);
+                }
+            }
+            
+            return str;
+        }
+
+        function runAllTests() {
+            const inputString = document.getElementById('inputString').value;
+            const targetChar = document.getElementById('targetChar').value;
+            const resultsDiv = document.getElementById('results');
+            
+            if (!inputString) {
+                alert('请输入要处理的字符串');
+                return;
+            }
+            
+            if (!targetChar) {
+                alert('请输入要删除的字符');
+                return;
+            }
+            
+            if (targetChar.length !== 1) {
+                alert('要删除的字符必须是单个字符');
+                return;
+            }
+            
+            const methods = [
+                {
+                    name: 'lastIndexOf + substring',
+                    func: removeLastChar1,
+                    description: '使用 lastIndexOf() 找到最后一个字符位置，然后用 substring() 拼接前后部分'
+                },
+                {
+                    name: 'lastIndexOf + slice',
+                    func: removeLastChar2,
+                    description: '使用 lastIndexOf() 找到最后一个字符位置，然后用 slice() 拼接前后部分'
+                },
+                {
+                    name: '正则表达式',
+                    func: removeLastChar3,
+                    description: '使用正向先行断言的正则表达式匹配最后一个指定字符'
+                },
+                {
+                    name: '数组反转',
+                    func: removeLastChar4,
+                    description: '将字符串转为数组，反转后找到第一个匹配字符并删除，再反转回来'
+                },
+                {
+                    name: '循环查找',
+                    func: removeLastChar5,
+                    description: '从字符串末尾开始循环查找，找到第一个匹配字符后删除'
+                }
+            ];
+            
+            let html = '';
+            
+            methods.forEach(method => {
+                try {
+                    const result = method.func(inputString, targetChar);
+                    const isChanged = result !== inputString;
+                    const resultClass = isChanged ? 'result-success' : 'result-unchanged';
+                    
+                    html += `
+                        <div class="method-result">
+                            <div class="method-header">${method.name}</div>
+                            <div class="method-body">
+                                <div class="method-description">${method.description}</div>
+                                <div class="result-display ${resultClass}">
+                                    <strong>原字符串:</strong> "${inputString}"<br>
+                                    <strong>删除字符:</strong> "${targetChar}"<br>
+                                    <strong>结果:</strong> "${result}"<br>
+                                    <strong>长度变化:</strong> ${inputString.length} → ${result.length}<br>
+                                    <strong>状态:</strong> ${isChanged ? '✓ 成功删除' : '⚠ 字符未找到'}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } catch (error) {
+                    html += `
+                        <div class="method-result">
+                            <div class="method-header">${method.name}</div>
+                            <div class="method-body">
+                                <div class="method-description">${method.description}</div>
+                                <div class="result-display result-error">
+                                    <strong>错误:</strong> ${error.message}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            resultsDiv.innerHTML = html;
+            
+            // 运行性能测试
+            runPerformanceTest(inputString, targetChar);
+        }
+
+        function runPerformanceTest(testString, testChar) {
+            const iterations = 10000;
+            const performanceDiv = document.getElementById('performanceResults');
+            
+            const methods = [
+                { name: 'lastIndexOf + substring', func: removeLastChar1 },
+                { name: 'lastIndexOf + slice', func: removeLastChar2 },
+                { name: '正则表达式', func: removeLastChar3 },
+                { name: '数组反转', func: removeLastChar4 },
+                { name: '循环查找', func: removeLastChar5 }
+            ];
+            
+            let html = '';
+            
+            methods.forEach(method => {
+                const startTime = performance.now();
+                
+                for (let i = 0; i < iterations; i++) {
+                    try {
+                        method.func(testString, testChar);
+                    } catch (error) {
+                        // 忽略错误，继续测试
+                    }
+                }
+                
+                const endTime = performance.now();
+                const elapsed = endTime - startTime;
+                
+                html += `
+                    <div class="performance-item">
+                        <div class="performance-method">${method.name}</div>
+                        <div class="performance-time">${elapsed.toFixed(2)} ms</div>
+                    </div>
+                `;
+            });
+            
+            performanceDiv.innerHTML = html;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('performanceResults').innerHTML = '';
+        }
+
+        // 页面加载时运行一次测试
+        window.onload = function() {
+            runAllTests();
+        };
+    </script>
+</body>
+</html> 
