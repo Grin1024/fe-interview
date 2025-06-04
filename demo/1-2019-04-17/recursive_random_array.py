@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 使用递归算法生成长度为5且元素为2-32间不重复的随机数数组
@@ -158,4 +157,6 @@ def test_random_array_generation():
 
 
 if __name__ == "__main__":
-    test_random_array_generation() 
+    print("开始测试...")
+    test_random_array_generation()
+    print("测试完成！") 

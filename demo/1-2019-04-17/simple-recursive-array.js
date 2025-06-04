@@ -3,17 +3,16 @@
  */
 
 // 生成指定范围内的随机整数
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const getRandomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
 
 // 递归生成不重复的随机数数组
-function generateUniqueRandomArray(
+const generateUniqueRandomArray = (
   result = [],
   targetLength = 5,
   min = 2,
   max = 32
-) {
+) => {
   // 递归终止条件：数组长度达到目标长度
   if (result.length === targetLength) {
     return result;
@@ -30,7 +29,7 @@ function generateUniqueRandomArray(
 
   // 递归调用，继续生成下一个数
   return generateUniqueRandomArray(result, targetLength, min, max);
-}
+};
 
 // 测试
 console.log("递归生成的不重复随机数数组:");
