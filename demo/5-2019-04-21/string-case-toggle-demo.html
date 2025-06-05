@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字符串大小写切换方法演示</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .method-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background: #fafafa;
+        }
+        
+        .method-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .method-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .result {
+            background: #e8f5e8;
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            min-height: 20px;
+        }
+        
+        .performance-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f8ff;
+            border-radius: 8px;
+            border: 1px solid #b0d4f1;
+        }
+        
+        .performance-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .performance-results {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            white-space: pre-line;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        .test-cases {
+            margin-top: 20px;
+        }
+        
+        .test-case {
+            display: inline-block;
+            background: #e3f2fd;
+            border: 1px solid #2196F3;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .test-case:hover {
+            background: #bbdefb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>字符串大小写切换方法演示</h1>
+        
+        <div class="input-section">
+            <label for="inputString">请输入要转换的字符串：</label>
+            <input type="text" id="inputString" placeholder="例如：Hello World!" value="Hello World!">
+            
+            <div class="test-cases">
+                <strong>快速测试用例：</strong>
+                <span class="test-case" onclick="setTestCase('Hello World!')">Hello World!</span>
+                <span class="test-case" onclick="setTestCase('JavaScript')">JavaScript</span>
+                <span class="test-case" onclick="setTestCase('ABC123def')">ABC123def</span>
+                <span class="test-case" onclick="setTestCase('hELLo WoRLd!')">hELLo WoRLd!</span>
+                <span class="test-case" onclick="setTestCase('The Quick Brown Fox')">The Quick Brown Fox</span>
+                <span class="test-case" onclick="setTestCase('aB1cD2eF3')">aB1cD2eF3</span>
+            </div>
+        </div>
+        
+        <div class="methods-grid">
+            <div class="method-card">
+                <div class="method-title">方法一：字符编码判断</div>
+                <div class="method-description">通过ASCII码值判断大小写，性能最佳</div>
+                <div class="result" id="result1"></div>
+            </div>
+            
+            <div class="method-card">
+                <div class="method-title">方法二：正则表达式</div>
+                <div class="method-description">使用正则匹配，代码简洁易读</div>
+                <div class="result" id="result2"></div>
+            </div>
+            
+            <div class="method-card">
+                <div class="method-title">方法三：ES6箭头函数</div>
+                <div class="method-description">现代JavaScript语法，最简洁</div>
+                <div class="result" id="result3"></div>
+            </div>
+            
+            <div class="method-card">
+                <div class="method-title">方法四：数组方法</div>
+                <div class="method-description">函数式编程风格</div>
+                <div class="result" id="result4"></div>
+            </div>
+            
+            <div class="method-card">
+                <div class="method-title">方法五：Unicode增强版</div>
+                <div class="method-description">支持国际化字符</div>
+                <div class="result" id="result5"></div>
+            </div>
+        </div>
+        
+        <div class="performance-section">
+            <div class="performance-title">性能测试</div>
+            <button onclick="runPerformanceTest()">运行性能测试</button>
+            <div class="performance-results" id="performanceResults">点击按钮开始性能测试...</div>
+        </div>
+    </div>
+
+    <script>
+        // 方法一：使用字符编码判断
+        function toggleCase1(str) {
+            if (typeof str !== 'string') {
+                throw new Error('参数必须是字符串类型');
+            }
+            
+            let result = '';
+            for (let i = 0; i < str.length; i++) {
+                const char = str[i];
+                const charCode = char.charCodeAt(0);
+                
+                if (charCode >= 65 && charCode <= 90) {
+                    result += char.toLowerCase();
+                } else if (charCode >= 97 && charCode <= 122) {
+                    result += char.toUpperCase();
+                } else {
+                    result += char;
+                }
+            }
+            return result;
+        }
+
+        // 方法二：使用正则表达式
+        function toggleCase2(str) {
+            if (typeof str !== 'string') {
+                throw new Error('参数必须是字符串类型');
+            }
+            
+            return str.replace(/[a-zA-Z]/g, function(char) {
+                return char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase();
+            });
+        }
+
+        // 方法三：使用ES6箭头函数和正则
+        const toggleCase3 = (str) => {
+            if (typeof str !== 'string') {
+                throw new Error('参数必须是字符串类型');
+            }
+            
+            return str.replace(/[a-zA-Z]/g, char => 
+                char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase()
+            );
+        };
+
+        // 方法四：使用数组方法
+        function toggleCase4(str) {
+            if (typeof str !== 'string') {
+                throw new Error('参数必须是字符串类型');
+            }
+            
+            return str.split('').map(char => {
+                if (/[a-z]/.test(char)) {
+                    return char.toUpperCase();
+                } else if (/[A-Z]/.test(char)) {
+                    return char.toLowerCase();
+                } else {
+                    return char;
+                }
+            }).join('');
+        }
+
+        // 方法五：支持Unicode的增强版本
+        function toggleCase5(str) {
+            if (typeof str !== 'string') {
+                throw new Error('参数必须是字符串类型');
+            }
+            
+            try {
+                return str.replace(/\p{L}/gu, char => {
+                    const upper = char.toUpperCase();
+                    const lower = char.toLowerCase();
+                    return char === upper ? lower : upper;
+                });
+            } catch (e) {
+                // 如果浏览器不支持Unicode属性转义，回退到基本方法
+                return toggleCase2(str);
+            }
+        }
+
+        // 更新所有结果
+        function updateResults() {
+            const input = document.getElementById('inputString').value;
+            
+            try {
+                document.getElementById('result1').textContent = toggleCase1(input);
+                document.getElementById('result2').textContent = toggleCase2(input);
+                document.getElementById('result3').textContent = toggleCase3(input);
+                document.getElementById('result4').textContent = toggleCase4(input);
+                document.getElementById('result5').textContent = toggleCase5(input);
+            } catch (error) {
+                console.error('转换出错:', error);
+            }
+        }
+
+        // 设置测试用例
+        function setTestCase(testString) {
+            document.getElementById('inputString').value = testString;
+            updateResults();
+        }
+
+        // 性能测试
+        function runPerformanceTest() {
+            const testString = 'The Quick Brown Fox Jumps Over The Lazy Dog'.repeat(100);
+            const iterations = 1000;
+            const results = [];
+            
+            results.push('=== 性能测试结果 ===');
+            results.push(`测试字符串长度: ${testString.length}`);
+            results.push(`测试次数: ${iterations}`);
+            results.push('');
+            
+            // 测试各个方法
+            const methods = [
+                { name: '方法一 (字符编码)', func: toggleCase1 },
+                { name: '方法二 (正则表达式)', func: toggleCase2 },
+                { name: '方法三 (ES6箭头函数)', func: toggleCase3 },
+                { name: '方法四 (数组方法)', func: toggleCase4 },
+                { name: '方法五 (Unicode增强)', func: toggleCase5 }
+            ];
+            
+            methods.forEach(method => {
+                const startTime = performance.now();
+                for (let i = 0; i < iterations; i++) {
+                    method.func(testString);
+                }
+                const endTime = performance.now();
+                const duration = (endTime - startTime).toFixed(2);
+                results.push(`${method.name}: ${duration}ms`);
+            });
+            
+            document.getElementById('performanceResults').textContent = results.join('\n');
+        }
+
+        // 监听输入变化
+        document.getElementById('inputString').addEventListener('input', updateResults);
+        
+        // 初始化
+        updateResults();
+    </script>
+</body>
+</html> 
