@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN" manifest="cache.manifest">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5离线存储演示</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #4facfe;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        
+        .section h3 {
+            color: #555;
+            margin-top: 25px;
+            font-size: 1.3em;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+        
+        .warning {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            margin: 15px 0;
+        }
+        
+        .demo-area {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .status.online {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        ul, ol {
+            padding-left: 25px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>HTML5 离线存储详解</h1>
+            <p>Application Cache 的使用方法与工作原理</p>
+        </div>
+        
+        <div class="content">
+            <!-- 概述部分 -->
+            <div class="section">
+                <h2>📖 什么是HTML5离线存储？</h2>
+                <p>HTML5离线存储（Application Cache）是HTML5提供的一种技术，允许web应用程序在没有网络连接的情况下仍能正常运行。它通过缓存文件到本地，使用户在离线状态下也能访问应用程序。</p>
+                
+                <div class="highlight">
+                    <strong>核心概念：</strong> 通过manifest文件定义需要缓存的资源，浏览器会自动下载并存储这些资源，在离线时从缓存中加载。
+                </div>
+            </div>
+
+            <!-- 使用方法部分 -->
+            <div class="section">
+                <h2>🚀 如何使用离线存储？</h2>
+                
+                <h3>1. 在HTML标签中声明manifest</h3>
+                <div class="code-block">
+&lt;html manifest="cache.manifest"&gt;
+    &lt;!-- 页面内容 --&gt;
+&lt;/html&gt;
+                </div>
+                
+                <h3>2. 创建manifest文件</h3>
+                <p>创建一个名为 <code>cache.manifest</code> 的文件：</p>
+                <div class="code-block">
+CACHE MANIFEST
+# 版本号：v1.0.0
+
+# 需要缓存的文件
+CACHE:
+index.html
+style.css
+script.js
+images/logo.png
+
+# 不缓存的文件（总是从网络获取）
+NETWORK:
+api/
+login.php
+*
+
+# 回退页面（当网络资源不可用时的替代页面）
+FALLBACK:
+/ offline.html
+images/ images/offline.png
+                </div>
+                
+                <h3>3. 设置正确的MIME类型</h3>
+                <p>服务器需要为manifest文件设置正确的MIME类型：</p>
+                <div class="code-block">
+# Apache (.htaccess)
+AddType text/cache-manifest .manifest
+
+# Nginx
+location ~* \.manifest$ {
+    add_header Content-Type text/cache-manifest;
+}
+                </div>
+            </div>
+
+            <!-- 工作原理部分 -->
+            <div class="section">
+                <h2>⚙️ 工作原理</h2>
+                
+                <h3>缓存过程：</h3>
+                <ol>
+                    <li><strong>首次访问：</strong> 浏览器解析HTML，发现manifest属性</li>
+                    <li><strong>下载manifest：</strong> 浏览器下载并解析manifest文件</li>
+                    <li><strong>缓存资源：</strong> 根据manifest文件下载并缓存所有列出的资源</li>
+                    <li><strong>触发事件：</strong> 缓存完成后触发相应的JavaScript事件</li>
+                    <li><strong>离线访问：</strong> 后续访问时，如果离线则从缓存加载资源</li>
+                </ol>
+                
+                <h3>缓存状态：</h3>
+                <ul>
+                    <li><strong>UNCACHED (0)：</strong> 未缓存状态</li>
+                    <li><strong>IDLE (1)：</strong> 空闲状态，缓存是最新的</li>
+                    <li><strong>CHECKING (2)：</strong> 正在检查更新</li>
+                    <li><strong>DOWNLOADING (3)：</strong> 正在下载资源</li>
+                    <li><strong>UPDATEREADY (4)：</strong> 新版本下载完成</li>
+                    <li><strong>OBSOLETE (5)：</strong> 缓存已过时</li>
+                </ul>
+            </div>
+
+            <!-- JavaScript API部分 -->
+            <div class="section">
+                <h2>💻 JavaScript API</h2>
+                
+                <div class="code-block">
+// 获取应用缓存对象
+var appCache = window.applicationCache;
+
+// 检查缓存状态
+function checkCacheStatus() {
+    var status = appCache.status;
+    var statusText = '';
+    
+    switch(status) {
+        case appCache.UNCACHED:
+            statusText = '未缓存';
+            break;
+        case appCache.IDLE:
+            statusText = '空闲状态';
+            break;
+        case appCache.CHECKING:
+            statusText = '检查更新中';
+            break;
+        case appCache.DOWNLOADING:
+            statusText = '下载中';
+            break;
+        case appCache.UPDATEREADY:
+            statusText = '更新就绪';
+            break;
+        case appCache.OBSOLETE:
+            statusText = '缓存过时';
+            break;
+    }
+    
+    return statusText;
+}
+
+// 监听缓存事件
+appCache.addEventListener('cached', function() {
+    console.log('资源已缓存');
+});
+
+appCache.addEventListener('checking', function() {
+    console.log('检查更新中...');
+});
+
+appCache.addEventListener('downloading', function() {
+    console.log('下载新资源中...');
+});
+
+appCache.addEventListener('updateready', function() {
+    console.log('新版本就绪');
+    if (confirm('发现新版本，是否立即更新？')) {
+        appCache.swapCache();
+        location.reload();
+    }
+});
+
+appCache.addEventListener('error', function() {
+    console.log('缓存出错');
+});
+
+// 手动更新缓存
+function updateCache() {
+    try {
+        appCache.update();
+    } catch(e) {
+        console.log('更新失败：', e);
+    }
+}
+                </div>
+            </div>
+
+            <!-- 实际演示部分 -->
+            <div class="section">
+                <h2>🎯 实际演示</h2>
+                
+                <div class="demo-area">
+                    <h3>当前状态检测</h3>
+                    <div id="networkStatus" class="status">检测中...</div>
+                    <div id="cacheStatus">缓存状态：<span id="cacheStatusText">检测中...</span></div>
+                    
+                    <div style="margin-top: 20px;">
+                        <button class="btn" onclick="checkStatus()">检查状态</button>
+                        <button class="btn" onclick="updateCache()">更新缓存</button>
+                        <button class="btn" onclick="clearCache()">清除缓存</button>
+                    </div>
+                    
+                    <div id="log" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto;"></div>
+                </div>
+            </div>
+
+            <!-- 注意事项部分 -->
+            <div class="section">
+                <h2>⚠️ 重要注意事项</h2>
+                
+                <div class="warning">
+                    <strong>已废弃警告：</strong> Application Cache 已在现代浏览器中被废弃，推荐使用 Service Worker 替代。
+                </div>
+                
+                <h3>使用时的注意点：</h3>
+                <ul>
+                    <li>manifest文件必须设置正确的MIME类型</li>
+                    <li>更新缓存需要修改manifest文件（通常修改版本号注释）</li>
+                    <li>缓存的页面即使在线也会从缓存加载，除非缓存更新</li>
+                    <li>如果manifest文件不存在，整个缓存会被清除</li>
+                    <li>HTTPS页面的manifest文件也必须是HTTPS</li>
+                </ul>
+                
+                <h3>现代替代方案：</h3>
+                <ul>
+                    <li><strong>Service Worker：</strong> 更强大的离线缓存解决方案</li>
+                    <li><strong>Cache API：</strong> 程序化的缓存管理</li>
+                    <li><strong>IndexedDB：</strong> 客户端数据存储</li>
+                    <li><strong>localStorage/sessionStorage：</strong> 简单的键值对存储</li>
+                </ul>
+            </div>
+
+            <!-- 完整示例部分 -->
+            <div class="section">
+                <h2>📝 完整示例</h2>
+                
+                <h3>manifest文件示例：</h3>
+                <div class="code-block">
+CACHE MANIFEST
+# Version 1.0.0 - 2024-01-01
+
+# 明确缓存的文件
+CACHE:
+index.html
+css/style.css
+js/app.js
+images/logo.png
+fonts/custom-font.woff
+
+# 始终从网络获取的资源
+NETWORK:
+api/
+login
+logout
+*
+
+# 离线时的回退页面
+FALLBACK:
+/ offline.html
+api/ offline-api.json
+                </div>
+                
+                <h3>JavaScript处理示例：</h3>
+                <div class="code-block">
+(function() {
+    'use strict';
+    
+    var appCache = window.applicationCache;
+    
+    if (!appCache) {
+        console.log('浏览器不支持Application Cache');
+        return;
+    }
+    
+    // 缓存事件处理
+    function handleCacheEvent(e) {
+        console.log('缓存事件：', e.type);
+        updateUI();
+    }
+    
+    // 绑定所有缓存事件
+    var events = ['cached', 'checking', 'downloading', 'error', 
+                  'noupdate', 'obsolete', 'progress', 'updateready'];
+    
+    events.forEach(function(event) {
+        appCache.addEventListener(event, handleCacheEvent);
+    });
+    
+    // 处理更新就绪事件
+    appCache.addEventListener('updateready', function() {
+        if (appCache.status === appCache.UPDATEREADY) {
+            if (confirm('应用程序已更新，是否重新加载？')) {
+                appCache.swapCache();
+                window.location.reload();
+            }
+        }
+    });
+    
+    // 更新UI状态
+    function updateUI() {
+        var statusElement = document.getElementById('cache-status');
+        if (statusElement) {
+            statusElement.textContent = getCacheStatusText();
+        }
+    }
+    
+    // 获取缓存状态文本
+    function getCacheStatusText() {
+        switch(appCache.status) {
+            case appCache.UNCACHED: return '未缓存';
+            case appCache.IDLE: return '空闲';
+            case appCache.CHECKING: return '检查中';
+            case appCache.DOWNLOADING: return '下载中';
+            case appCache.UPDATEREADY: return '更新就绪';
+            case appCache.OBSOLETE: return '已过时';
+            default: return '未知状态';
+        }
+    }
+    
+    // 初始化
+    updateUI();
+})();
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 网络状态检测
+        function updateNetworkStatus() {
+            var statusElement = document.getElementById('networkStatus');
+            if (navigator.onLine) {
+                statusElement.textContent = '在线状态';
+                statusElement.className = 'status online';
+            } else {
+                statusElement.textContent = '离线状态';
+                statusElement.className = 'status offline';
+            }
+        }
+
+        // 检查缓存状态
+        function checkCacheStatus() {
+            var appCache = window.applicationCache;
+            var statusText = '不支持';
+            
+            if (appCache) {
+                switch(appCache.status) {
+                    case appCache.UNCACHED:
+                        statusText = '未缓存 (0)';
+                        break;
+                    case appCache.IDLE:
+                        statusText = '空闲状态 (1)';
+                        break;
+                    case appCache.CHECKING:
+                        statusText = '检查更新中 (2)';
+                        break;
+                    case appCache.DOWNLOADING:
+                        statusText = '下载中 (3)';
+                        break;
+                    case appCache.UPDATEREADY:
+                        statusText = '更新就绪 (4)';
+                        break;
+                    case appCache.OBSOLETE:
+                        statusText = '缓存过时 (5)';
+                        break;
+                }
+            }
+            
+            document.getElementById('cacheStatusText').textContent = statusText;
+        }
+
+        // 日志记录
+        function log(message) {
+            var logElement = document.getElementById('log');
+            var time = new Date().toLocaleTimeString();
+            logElement.innerHTML += `[${time}] ${message}<br>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        // 检查状态
+        function checkStatus() {
+            updateNetworkStatus();
+            checkCacheStatus();
+            log('状态检查完成');
+        }
+
+        // 更新缓存
+        function updateCache() {
+            var appCache = window.applicationCache;
+            if (appCache) {
+                try {
+                    appCache.update();
+                    log('开始检查缓存更新...');
+                } catch(e) {
+                    log('更新失败：' + e.message);
+                }
+            } else {
+                log('浏览器不支持Application Cache');
+            }
+        }
+
+        // 清除缓存（实际上是标记为过时）
+        function clearCache() {
+            log('注意：Application Cache无法通过JavaScript直接清除');
+            log('需要删除manifest文件或修改服务器配置');
+        }
+
+        // 监听网络状态变化
+        window.addEventListener('online', function() {
+            updateNetworkStatus();
+            log('网络连接已恢复');
+        });
+
+        window.addEventListener('offline', function() {
+            updateNetworkStatus();
+            log('网络连接已断开');
+        });
+
+        // 监听Application Cache事件
+        if (window.applicationCache) {
+            var appCache = window.applicationCache;
+            
+            appCache.addEventListener('cached', function() {
+                log('资源已缓存到本地');
+            });
+            
+            appCache.addEventListener('checking', function() {
+                log('正在检查manifest文件更新...');
+            });
+            
+            appCache.addEventListener('downloading', function() {
+                log('正在下载更新的资源...');
+            });
+            
+            appCache.addEventListener('updateready', function() {
+                log('新版本已下载完成，可以更新');
+                checkCacheStatus();
+            });
+            
+            appCache.addEventListener('noupdate', function() {
+                log('manifest文件未发生变化');
+            });
+            
+            appCache.addEventListener('error', function() {
+                log('缓存过程中发生错误');
+            });
+            
+            appCache.addEventListener('obsolete', function() {
+                log('manifest文件返回404，缓存被标记为过时');
+            });
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            checkStatus();
+            log('页面加载完成，Application Cache演示已就绪');
+        });
+    </script>
+</body>
+</html> 

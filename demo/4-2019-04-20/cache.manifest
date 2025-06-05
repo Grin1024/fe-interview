@@ -1,0 +1,15 @@
+CACHE MANIFEST
+# Version 1.0.0 - 2024-01-01
+# HTML5 离线存储演示文件
+
+# 需要缓存的文件
+CACHE:
+html5-offline-storage-demo.html
+
+# 始终从网络获取的资源
+NETWORK:
+*
+
+# 离线时的回退页面
+FALLBACK:
+/ html5-offline-storage-demo.html 
