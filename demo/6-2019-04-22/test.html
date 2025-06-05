@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>去除制表符和换行符方法测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .input-section, .output-section {
+            margin: 20px 0;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            resize: vertical;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .method-name {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>去除制表符和换行符方法测试</h1>
+        
+        <div class="input-section">
+            <h3>输入测试文本：</h3>
+            <textarea id="inputText" placeholder="请输入包含制表符和换行符的文本...">这是一个	包含制表符
+和换行符
+的测试字符串	
+</textarea>
+            <br>
+            <button onclick="testAllMethods()">测试所有方法</button>
+            <button onclick="clearResults()">清空结果</button>
+        </div>
+        
+        <div class="output-section">
+            <h3>测试结果：</h3>
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <script src="removeTabsAndNewlines.js"></script>
+    <script>
+        function testAllMethods() {
+            const inputText = document.getElementById('inputText').value;
+            const resultsDiv = document.getElementById('results');
+            
+            if (!inputText.trim()) {
+                alert('请输入测试文本');
+                return;
+            }
+            
+            const methods = [
+                {
+                    name: '方法1: 直接去除制表符和换行符',
+                    func: StringUtils.removeTabsAndNewlines,
+                    args: [inputText]
+                },
+                {
+                    name: '方法2: 用空格替换制表符和换行符',
+                    func: StringUtils.removeTabsAndNewlinesWithReplacement,
+                    args: [inputText, ' ']
+                },
+                {
+                    name: '方法3: 去除所有空白字符',
+                    func: StringUtils.removeAllWhitespace,
+                    args: [inputText]
+                },
+                {
+                    name: '方法4: 去除制表符和换行符，保留空格',
+                    func: StringUtils.removeTabsAndNewlinesKeepSpaces,
+                    args: [inputText]
+                },
+                {
+                    name: '方法5: 去除制表符换行符并压缩空格',
+                    func: StringUtils.removeTabsNewlinesAndCompressSpaces,
+                    args: [inputText]
+                },
+                {
+                    name: '方法6: 使用split和join方式',
+                    func: StringUtils.removeTabsAndNewlinesBySplit,
+                    args: [inputText]
+                }
+            ];
+            
+            let html = '<div class="result"><span class="method-name">原始文本:</span><br>' + 
+                      JSON.stringify(inputText) + '</div>';
+            
+            methods.forEach(method => {
+                try {
+                    const result = method.func.apply(null, method.args);
+                    html += '<div class="result">' +
+                           '<span class="method-name">' + method.name + ':</span><br>' +
+                           JSON.stringify(result) + '</div>';
+                } catch (error) {
+                    html += '<div class="result" style="color: red;">' +
+                           '<span class="method-name">' + method.name + ' (错误):</span><br>' +
+                           error.message + '</div>';
+                }
+            });
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        // 页面加载时运行一次测试
+        window.onload = function() {
+            testAllMethods();
+        };
+    </script>
+</body>
+</html> 
