@@ -40,8 +40,8 @@
 | :coffee: Summary | [week](category/week.md) | [history](category/history.md)  |
 
 
-## :clock430: Today's Knowledge Points (2025.06.03) —— 2240 days  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:one: [TypeScript] [TypeScript中的抽象类（Abstract Classes）是什么？](https://github.com/haizlin/fe-interview/issues/6212)  
+## :clock430: Today's Knowledge Points (2025.06.10) —— 2247 days  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:one: [TypeScript] [TypeScript中的in关键字是什么？](https://github.com/haizlin/fe-interview/issues/6219)  
  
   
 ### :camel: History
@@ -52,8 +52,8 @@
     …………  
 
 
-- 2239 days (2025.06.02)  
-    	 :one: [TypeScript] [TypeScript中的访问修饰符（Access Modifiers）有哪些？](https://github.com/haizlin/fe-interview/issues/6211)  
+- 2246 days (2025.06.09)  
+    	 :one: [TypeScript] [TypeScript中的instanceof操作符是什么？](https://github.com/haizlin/fe-interview/issues/6218)  
  
 	
 - **[All](category/history.md)**
